@@ -30,7 +30,7 @@
 - [ ] 有Scroll Reveal动效 + stagger延迟
 - [ ] 使用了大装饰数字或大透明英文做背景
 - [ ] 有品牌色条（border-left）或高亮标记
-- [ ] ::selection用黄色高亮
+- [ ] ::selection用橙色高亮
 
 ---
 

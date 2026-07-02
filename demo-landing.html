@@ -10,10 +10,10 @@
   <style>
     /* === CSS变量 === */
     :root {
-      --blue: #2B7FD8;
-      --blue-deep: #1E5BA8;
-      --yellow: #F4D758;
-      --yellow-soft: #FFF3CD;
+      --blue: #302C2B;
+      --blue-deep: #1F1B1A;
+      --yellow: #F07C1C;
+      --yellow-soft: #FBE6D2;
       --red: #E84A5F;
       --cream: #fefcf6;
       --cream-dark: #faf6eb;
@@ -107,7 +107,7 @@
       top: -20%; right: -10%;
       width: 500px; height: 500px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(244,215,88,0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(240,124,28,0.12) 0%, transparent 70%);
       pointer-events: none;
     }
     .hero::after {
@@ -116,7 +116,7 @@
       bottom: -10%; left: -5%;
       width: 400px; height: 400px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(43,127,216,0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(48,44,43,0.08) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -139,7 +139,7 @@
       position: relative;
     }
     .hero h1 .hl {
-      background: linear-gradient(transparent 60%, rgba(244,215,88,0.4) 60%);
+      background: linear-gradient(transparent 60%, rgba(240,124,28,0.4) 60%);
       padding: 0 6px;
     }
 
@@ -226,11 +226,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      padding: 4px;
+      overflow: hidden;
     }
-    .speaker-card:nth-child(1) .speaker-avatar { background: rgba(43,127,216,0.08); }
-    .speaker-card:nth-child(2) .speaker-avatar { background: rgba(244,215,88,0.15); }
+    .speaker-card:nth-child(1) .speaker-avatar { background: rgba(48,44,43,0.08); }
+    .speaker-card:nth-child(2) .speaker-avatar { background: rgba(240,124,28,0.15); }
     .speaker-card:nth-child(3) .speaker-avatar { background: rgba(232,74,95,0.08); }
+    .speaker-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
 
     .speaker-name {
       font-family: 'Noto Serif SC', serif;
@@ -271,10 +279,10 @@
       justify-content: center;
       font-size: 1.8rem;
     }
-    .highlight-card:nth-child(1) .highlight-icon { background: rgba(43,127,216,0.06); }
-    .highlight-card:nth-child(2) .highlight-icon { background: rgba(244,215,88,0.12); }
+    .highlight-card:nth-child(1) .highlight-icon { background: rgba(48,44,43,0.06); }
+    .highlight-card:nth-child(2) .highlight-icon { background: rgba(240,124,28,0.12); }
     .highlight-card:nth-child(3) .highlight-icon { background: rgba(232,74,95,0.06); }
-    .highlight-card:nth-child(4) .highlight-icon { background: rgba(43,127,216,0.06); }
+    .highlight-card:nth-child(4) .highlight-icon { background: rgba(48,44,43,0.06); }
     .highlight-content {
       flex: 1;
       padding: 20px 24px;
@@ -459,7 +467,7 @@
     }
     .cta-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(43,127,216,0.3);
+      box-shadow: 0 8px 24px rgba(48,44,43,0.3);
     }
     .cta-note {
       margin-top: 1rem;
@@ -544,19 +552,19 @@
       </div>
       <div class="speaker-grid">
         <div class="speaker-card reveal reveal-d1">
-          <div class="speaker-avatar">🎨</div>
+          <div class="speaker-avatar"><img src="assets/avatar.jpg" alt="个人IP头像"></div>
           <h3 class="speaker-name">林知微</h3>
           <p class="speaker-role">独立插画师 · AI共创实验者</p>
           <p class="speaker-topic">从手绘到AI辅助创作，她如何用Midjourney和手绘结合，完成了一本独立绘本的全流程。</p>
         </div>
         <div class="speaker-card reveal reveal-d2">
-          <div class="speaker-avatar">🧠</div>
+          <div class="speaker-avatar"><img src="assets/avatar.jpg" alt="个人IP头像"></div>
           <h3 class="speaker-name">陈觉</h3>
           <p class="speaker-role">AIGC产品负责人 · 前大厂算法专家</p>
           <p class="speaker-topic">大模型落地产品的第一年：哪些AI应用真的跑通了？哪些只是Demo？</p>
         </div>
         <div class="speaker-card reveal reveal-d3">
-          <div class="speaker-avatar">✍️</div>
+          <div class="speaker-avatar"><img src="assets/avatar.jpg" alt="个人IP头像"></div>
           <h3 class="speaker-name">苏小也</h3>
           <p class="speaker-role">独立写作者 · Newsletter主理人</p>
           <p class="speaker-topic">用AI做研究助手而非替代者——如何让Claude帮你写出真正有灵魂的长文。</p>
@@ -569,7 +577,7 @@
   <section class="dark-section">
     <div class="container reveal">
       <p class="quote-text">AI不会取代创作者，但<em>会用AI的创作者</em>会取代不会用的。<br>这不是一句口号，而是我们正在经历的现实。</p>
-      <p class="quote-attr">— 本次活动发起人 · 不二</p>
+      <p class="quote-attr">— 本次活动发起人 · xiaoyugucang</p>
     </div>
   </section>
 
@@ -675,7 +683,7 @@
 
   <!-- ====== Footer ====== -->
   <footer class="footer">
-    <p>AI 创作者之夜 © 2026 · 由不二发起 · Powered by Esther Design System</p>
+    <p>AI 创作者之夜 © 2026 · 由 xiaoyugucang 发起 · Powered by xiaoyugucang Design System</p>
   </footer>
 
   <!-- ====== Scripts ====== -->

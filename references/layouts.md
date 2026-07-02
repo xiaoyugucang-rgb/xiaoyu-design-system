@@ -412,7 +412,7 @@
 }
 ```
 
-⚠️ 注意：一页最多1~2个。可换用黄色（文字改为墨色）。不要在品牌色面板上放蓝色文字。
+⚠️ 注意：一页最多1~2个。可换用橙色（文字改为墨色）。不要在品牌色面板上放灰棕文字。
 
 ---
 
@@ -657,7 +657,7 @@
   font-family: 'Fraunces', serif;
   font-size: 1.5rem;
   font-weight: 900;
-  color: rgba(43,127,216,0.12);
+  color: rgba(48,44,43,0.12);
   min-width: 36px;
   transition: all 0.3s ease;
 }
@@ -696,9 +696,9 @@
   font-size: 3rem;
   font-weight: 900;
   line-height: 1;
-  color: rgba(43,127,216,0.15);
+  color: rgba(48,44,43,0.15);
 }
-.step-item:nth-child(3n+2) .step-num { color: rgba(244,215,88,0.35); }
+.step-item:nth-child(3n+2) .step-num { color: rgba(240,124,28,0.35); }
 .step-item:nth-child(3n) .step-num { color: rgba(232,74,95,0.2); }
 .step-item .step-info h4 {
   font-family: 'Noto Serif SC', serif;
