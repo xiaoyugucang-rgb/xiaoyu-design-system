@@ -10,13 +10,13 @@
 
 ## Demo
 
-当前仓库内的预览/模板入口：
+当前 GitHub Pages 预览入口：
 
 ### 📖 教程型 - 分享会页面
 
 信息清晰、步骤明确、有节奏的单页科普/教程。
 
-🔗 [仓库模板](assets/template-tutorial.html)
+🔗 [在线预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/assets/template-tutorial.html)
 
 ---
 
@@ -24,7 +24,7 @@
 
 视觉冲击、深浅面板交替、强节奏感的活动邀请页。
 
-🔗 [仓库预览](demo-landing.html)
+🔗 [在线预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/demo-landing.html)
 
 ---
 
@@ -32,7 +32,7 @@
 
 功能优先、交互感、信息密度高的应用型页面。
 
-🔗 [仓库模板](assets/template-app.html)
+🔗 [在线预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/assets/template-app.html)
 
 ---
 
@@ -40,7 +40,7 @@
 
 3:4 比例、字大、手机可读、一键导出 PNG 的图文卡片。
 
-🔗 [仓库模板](assets/template-cards.html)
+🔗 [在线预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/assets/template-cards.html)
 
 ---
 
@@ -48,7 +48,7 @@
 
 30+ 经过验证的可复用组件。
 
-🔗 [组件库预览](components-preview.html)
+🔗 [组件库预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/components-preview.html)
 
 ---
 
