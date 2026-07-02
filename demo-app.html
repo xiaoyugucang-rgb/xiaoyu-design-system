@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小鱼的谷仓看板 - xiaoyugucang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Fraunces:ital,wght@0,400;0,900;1,400;1,700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brown:#302C2B;
+  --brown-deep:#1F1B1A;
+  --orange:#F07C1C;
+  --orange-soft:#FBE6D2;
+  --red:#E84A5F;
+  --cream:#fefcf6;
+  --paper:#faf6eb;
+  --ink:#1A1A2E;
+  --sub:#4A4A5A;
+  --muted:#8A8A9A;
+  --line:rgba(48,44,43,.1);
+  --shadow:0 8px 30px rgba(48,44,43,.08);
+  --radius:14px;
+}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  font-family:'Noto Sans SC',-apple-system,'PingFang SC','Helvetica Neue',sans-serif;
+  color:var(--ink);
+  background:
+    linear-gradient(rgba(48,44,43,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(48,44,43,.025) 1px,transparent 1px),
+    radial-gradient(circle at 90% 8%,rgba(232,74,95,.08),transparent 24%),
+    var(--cream);
+  background-size:36px 36px,36px 36px,auto,auto;
+  line-height:1.6;
+  padding-bottom:72px;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.shell{max-width:980px;margin:0 auto;padding:0 clamp(16px,4vw,34px)}
+.header{
+  padding:clamp(36px,6vw,68px) 0 20px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:clamp(16px,3vw,28px);
+  position:relative;
+}
+.avatar{
+  width:clamp(78px,11vw,110px);
+  height:clamp(78px,11vw,110px);
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--orange);
+  box-shadow:0 8px 26px rgba(48,44,43,.16);
+}
+.header-kicker{
+  font-family:'Caveat',cursive;
+  color:var(--orange);
+  font-size:clamp(1rem,2.2vw,1.3rem);
+}
+.header h1{
+  font-family:'Noto Serif SC',serif;
+  font-size:clamp(1.8rem,4.8vw,3rem);
+  line-height:1.15;
+  font-weight:900;
+}
+.header-sub{
+  color:var(--sub);
+  margin-top:6px;
+}
+.date-card{
+  min-width:144px;
+  background:var(--brown);
+  color:#fff7ed;
+  border-radius:18px;
+  padding:16px 18px;
+  box-shadow:var(--shadow);
+}
+.date-card .day{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;line-height:1}
+.date-card .month{font-family:'Fira Code',monospace;font-size:.76rem;color:rgba(255,255,255,.65);margin-top:6px}
+.tabs{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  padding:8px 0 5px;
+  border-bottom:2px solid rgba(48,44,43,.1);
+  margin-bottom:clamp(22px,4vw,34px);
+}
+.tab{
+  border:0;
+  background:transparent;
+  color:var(--sub);
+  padding:10px 16px;
+  border-radius:10px 10px 0 0;
+  white-space:nowrap;
+  font-weight:700;
+  position:relative;
+}
+.tab:hover{background:rgba(48,44,43,.05)}
+.tab.active{color:var(--brown);background:rgba(240,124,28,.12)}
+.tab.active::after{
+  content:"";
+  position:absolute;
+  left:18%;
+  right:18%;
+  bottom:-7px;
+  height:3px;
+  background:var(--orange);
+  border-radius:999px;
+}
+.tab-panel{display:none;animation:fade .24s ease}
+.tab-panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.section{margin-bottom:clamp(28px,5vw,52px)}
+.section-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:clamp(1.12rem,2.4vw,1.5rem);
+  font-weight:900;
+  margin-bottom:14px;
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+}
+.section-title span{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--muted);
+  font-size:.82em;
+}
+.card{
+  background:white;
+  border:1px solid rgba(48,44,43,.07);
+  border-radius:var(--radius);
+  box-shadow:0 4px 20px rgba(48,44,43,.045);
+}
+.input-row{display:flex;gap:8px;margin-bottom:12px}
+.text-input,.textarea{
+  width:100%;
+  border:2px solid #eee6d8;
+  background:white;
+  border-radius:12px;
+  padding:10px 14px;
+  outline:none;
+  transition:border-color .16s,box-shadow .16s;
+}
+.text-input:focus,.textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(240,124,28,.14)}
+.textarea{min-height:92px;resize:vertical}
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:10px 16px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.btn-primary{background:var(--brown);color:#fff7ed}
+.btn-orange{background:var(--orange);color:#28180c}
+.btn-soft{background:var(--orange-soft);color:#8f4507}
+.board-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.todo-list{display:grid;gap:10px}
+.todo-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 14px;
+  background:white;
+  border-radius:12px;
+  border:1px solid rgba(48,44,43,.06);
+}
+.check{
+  width:21px;height:21px;border-radius:7px;
+  border:2px solid var(--orange);
+  display:grid;place-items:center;
+  color:var(--orange);
+  flex-shrink:0;
+  margin-top:1px;
+}
+.todo-item.done{opacity:.62}
+.todo-item.done .todo-text{text-decoration:line-through;text-decoration-color:var(--red)}
+.todo-meta{font-family:'Fira Code',monospace;font-size:.68rem;color:var(--muted);margin-top:3px}
+.cal-card{padding:18px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cal-head h3{font-family:'Noto Serif SC',serif;font-size:1rem}
+.cal-nav button{
+  border:1px solid #eadfce;
+  background:var(--paper);
+  border-radius:8px;
+  padding:3px 10px;
+}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-label{text-align:center;font-size:.68rem;color:var(--muted);font-weight:700;padding:4px 0}
+.cal-cell{
+  aspect-ratio:1;
+  border-radius:8px;
+  background:#fbf7ee;
+  position:relative;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.cal-cell.today{outline:2px solid var(--orange);background:rgba(240,124,28,.1)}
+.day-num{position:absolute;top:3px;left:5px;font-family:'Fira Code',monospace;font-size:.56rem;color:#b8ad9b}
+.mood{font-size:1.35rem}
+.smart-card{padding:18px}
+.dispatch-preview{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+.dispatch-col{
+  background:var(--paper);
+  border-radius:12px;
+  padding:12px;
+  min-height:104px;
+}
+.dispatch-col h4{font-size:.8rem;margin-bottom:8px;color:var(--brown)}
+.dispatch-col p{font-size:.78rem;color:var(--sub);margin-bottom:5px}
+.ideas-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+.idea-card{
+  position:relative;
+  overflow:hidden;
+  border-radius:8px;
+  padding:18px 20px;
+  min-height:140px;
+  box-shadow:var(--shadow);
+}
+.idea-card.orange{background:var(--orange);color:#25160b}
+.idea-card.brown{background:var(--brown);color:#fff7ed}
+.idea-card.red{background:var(--red);color:#fff}
+.idea-card.paper{background:#fff;border:1px solid rgba(48,44,43,.08)}
+.drag{font-family:'Fira Code',monospace;font-size:.68rem;opacity:.45;letter-spacing:.18em;margin-bottom:18px}
+.idea-card h3{font-family:'Noto Serif SC',serif;font-size:1.22rem;line-height:1.45;margin-bottom:10px}
+.idea-card p{font-size:.86rem;opacity:.76}
+.idea-card::after{
+  content:attr(data-kind);
+  position:absolute;
+  right:14px;
+  bottom:10px;
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:2rem;
+  opacity:.13;
+}
+.project-card{padding:18px;margin-bottom:14px}
+.project-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.status{
+  margin-left:auto;
+  font-family:'Fira Code',monospace;
+  font-size:.68rem;
+  padding:3px 8px;
+  border-radius:999px;
+}
+.status.active{background:rgba(240,124,28,.14);color:#8f4507}
+.status.paused{background:rgba(48,44,43,.08);color:var(--brown)}
+.progress{
+  height:9px;
+  background:#f0e8da;
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+.bar{height:100%;background:linear-gradient(90deg,var(--orange),var(--red));border-radius:999px}
+.subtasks{list-style:none;display:grid;gap:8px}
+.subtasks li{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--sub);
+  font-size:.9rem;
+}
+.mini-dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.archive-card{
+  background:var(--brown-deep);
+  color:#fff7ed;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:14px;
+}
+.archive-head{
+  display:flex;
+  justify-content:space-between;
+  color:rgba(255,255,255,.52);
+  font-family:'Fira Code',monospace;
+  font-size:.74rem;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  margin-bottom:10px;
+}
+.archive-line{
+  display:grid;
+  grid-template-columns:32px 1fr auto;
+  gap:10px;
+  padding:8px 0;
+  border-bottom:1px dotted rgba(255,255,255,.12);
+  font-size:.88rem;
+}
+.archive-line:last-child{border-bottom:0}
+.archive-line span:first-child,.archive-line span:last-child{font-family:'Fira Code',monospace;color:rgba(255,255,255,.45)}
+.sig{
+  margin-top:34px;
+  padding:24px 0 0;
+  border-top:1px solid rgba(48,44,43,.08);
+  text-align:center;
+}
+.sig-name{font-family:'Noto Serif SC',serif;font-weight:900;font-size:1.4rem}
+.sig-line{color:var(--sub);font-family:'Caveat',cursive;font-size:1.18rem;margin-top:4px}
+@media (max-width:760px){
+  .header{grid-template-columns:auto 1fr}
+  .date-card{grid-column:1/-1;width:100%}
+  .board-grid,.ideas-grid,.dispatch-preview{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  body{font-size:15px}
+  .input-row{flex-direction:column}
+  .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <img class="avatar" src="assets/avatar.jpg" alt="xiaoyugucang 头像">
+    <div>
+      <div class="header-kicker">hello from the grain barn ✦</div>
+      <h1>小鱼的谷仓看板</h1>
+      <p class="header-sub">把灵感、任务、项目和复盘收进一个会蛄蛹的内容系统。</p>
+    </div>
+    <div class="date-card">
+      <div class="day" id="dayNum">02</div>
+      <div class="month" id="dateText">JUL · THU</div>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="App tabs">
+    <button class="tab active" data-tab="today">今日</button>
+    <button class="tab" data-tab="ideas">灵感谷仓</button>
+    <button class="tab" data-tab="projects">项目</button>
+    <button class="tab" data-tab="archive">归档</button>
+  </nav>
+
+  <main>
+    <section class="tab-panel active" id="today">
+      <div class="section">
+        <h2 class="section-title">今日面板 <span>Daily Board</span></h2>
+        <div class="board-grid">
+          <div>
+            <div class="input-row">
+              <input class="text-input" id="todoInput" placeholder="把今天要做的事扔进谷仓...">
+              <button class="btn btn-primary" onclick="addTodo()">添加</button>
+            </div>
+            <div class="todo-list" id="todoList"></div>
+          </div>
+          <div class="cal-card card">
+            <div class="cal-head">
+              <h3>七月情绪日历</h3>
+              <div class="cal-nav"><button>‹</button><button>›</button></div>
+            </div>
+            <div class="cal-grid" id="calendar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section smart-card card">
+        <h2 class="section-title">智能分拣 <span>Smart Dispatch</span></h2>
+        <textarea class="textarea" id="smartInput" placeholder="例：昨天复盘了组件库，今天改教程页，明天整理卡片模板"></textarea>
+        <div class="input-row" style="margin-top:10px;margin-bottom:0">
+          <button class="btn btn-orange" onclick="dispatchText()">分拣到时间线</button>
+          <button class="btn btn-soft" onclick="fillExample()">填入示例</button>
+        </div>
+        <div class="dispatch-preview" id="dispatchPreview">
+          <div class="dispatch-col"><h4>昨日</h4><p>复盘组件库截图</p></div>
+          <div class="dispatch-col"><h4>今日</h4><p>做教程页预览</p></div>
+          <div class="dispatch-col"><h4>明日</h4><p>整理卡片模板文案</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="ideas">
+      <div class="section">
+        <h2 class="section-title">灵感谷仓 <span>Idea Barn</span></h2>
+        <div class="input-row">
+          <input class="text-input" id="ideaInput" placeholder="记录一个还没长大的想法...">
+          <button class="btn btn-primary" onclick="addIdea()">收进谷仓</button>
+        </div>
+        <div class="ideas-grid" id="ideasGrid"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="projects">
+      <div class="section">
+        <h2 class="section-title">项目推进 <span>Projects</span></h2>
+        <div id="projectList"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="archive">
+      <div class="section">
+        <h2 class="section-title">归档记录 <span>Build Log</span></h2>
+        <div class="archive-card">
+          <div class="archive-head"><span>CONTENT_SYSTEM.LOG</span><span>2026-W27</span></div>
+          <div class="archive-line"><span>01</span><span>把预览链接从源码页切到 GitHub Pages</span><span>DONE</span></div>
+          <div class="archive-line"><span>02</span><span>复刻教程页的分栏、金句、时间线结构</span><span>DONE</span></div>
+          <div class="archive-line"><span>03</span><span>把 App 型模板补成可交互看板</span><span>NOW</span></div>
+        </div>
+        <div class="archive-card">
+          <div class="archive-head"><span>IP_PROFILE.MD</span><span>xiaoyugucang</span></div>
+          <div class="archive-line"><span>色</span><span>灰棕 #302C2B / 橙 #F07C1C / 红 #E84A5F</span><span>LOCK</span></div>
+          <div class="archive-line"><span>签</span><span>在谷仓不停蛄蛹的小鱼</span><span>LOCK</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sig">
+    <div class="sig-name">xiaoyugucang</div>
+    <div class="sig-line">在谷仓不停蛄蛹的小鱼</div>
+  </footer>
+</div>
+
+<script>
+const $=sel=>document.querySelector(sel);
+const $$=sel=>Array.from(document.querySelectorAll(sel));
+
+$$('.tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    $$('.tab').forEach(t=>t.classList.remove('active'));
+    $$('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    $('#'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+const todos=[
+  {text:'检查 GitHub Pages 预览是否 200',done:true,tag:'pages'},
+  {text:'把教程型预览做成完整页面',done:true,tag:'design'},
+  {text:'把 App 型预览做成可交互看板',done:false,tag:'app'},
+  {text:'截图复盘：有没有一眼像 xiaoyugucang',done:false,tag:'review'}
+];
+function renderTodos(){
+  $('#todoList').innerHTML=todos.map((t,i)=>`
+    <div class="todo-item ${t.done?'done':''}" onclick="toggleTodo(${i})">
+      <span class="check">${t.done?'✓':''}</span>
+      <div><div class="todo-text">${escapeHtml(t.text)}</div><div class="todo-meta">#${t.tag}</div></div>
+    </div>`).join('');
+}
+function addTodo(){
+  const input=$('#todoInput');
+  const text=input.value.trim();
+  if(!text)return;
+  todos.unshift({text,done:false,tag:'new'});
+  input.value='';
+  renderTodos();
+}
+function toggleTodo(i){todos[i].done=!todos[i].done;renderTodos()}
+$('#todoInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo()});
+
+function renderCalendar(){
+  const labels=['一','二','三','四','五','六','日'];
+  const moods=['🌱','🧡','📌','🐟','✨','📝','🍊','💭','📷','🔥','🌾','💡'];
+  let html=labels.map(l=>`<div class="cal-label">${l}</div>`).join('');
+  for(let i=0;i<35;i++){
+    const day=i-2;
+    if(day<1||day>31){html+='<div class="cal-cell"></div>';continue}
+    const mood=moods[day%moods.length];
+    html+=`<div class="cal-cell ${day===2?'today':''}"><span class="day-num">${day}</span><span class="mood">${mood}</span></div>`;
+  }
+  $('#calendar').innerHTML=html;
+}
+
+function fillExample(){
+  $('#smartInput').value='昨天复盘组件库里的头像和落款，今天补教程页和App页预览，明天整理README里的预览入口';
+}
+function dispatchText(){
+  const raw=$('#smartInput').value.trim()||'今天把空白模板补成真正可看的预览';
+  const parts=[
+    raw.includes('昨天')?'复盘组件库里的头像和落款':'整理旧素材',
+    raw.includes('今天')?'补教程页和 App 页预览':'推进当前页面',
+    raw.includes('明天')?'整理 README 预览入口':'做截图自检'
+  ];
+  $('#dispatchPreview').innerHTML=[
+    ['昨日',parts[0]],['今日',parts[1]],['明日',parts[2]]
+  ].map(([h,p])=>`<div class="dispatch-col"><h4>${h}</h4><p>${p}</p></div>`).join('');
+}
+
+const ideas=[
+  {kind:'NOTE',cls:'orange',title:'把“谷仓”做成内容资产隐喻',body:'灵感不是马上发布，而是先发酵。'},
+  {kind:'IP',cls:'brown',title:'头像要频繁出现，但不喧宾夺主',body:'让小鱼成为识别点，不是装饰贴纸。'},
+  {kind:'FLOW',cls:'paper',title:'素材 → 结构 → 卡片 → 长文',body:'所有输出都能回流成下次的素材。'},
+  {kind:'RED',cls:'red',title:'不要追求模板感的高级',body:'要像一个真实的人在认真整理生活。'}
+];
+function renderIdeas(){
+  $('#ideasGrid').innerHTML=ideas.map((it,i)=>`
+    <article class="idea-card ${it.cls}" data-kind="${it.kind}">
+      <div class="drag">DRAG · ${String(i+1).padStart(2,'0')}</div>
+      <h3>${escapeHtml(it.title)}</h3>
+      <p>${escapeHtml(it.body)}</p>
+    </article>`).join('');
+}
+function addIdea(){
+  const input=$('#ideaInput');
+  const text=input.value.trim();
+  if(!text)return;
+  ideas.unshift({kind:'NEW',cls:['orange','brown','paper','red'][ideas.length%4],title:text,body:'刚收进谷仓，还在蛄蛹。'});
+  input.value='';
+  renderIdeas();
+}
+$('#ideaInput').addEventListener('keydown',e=>{if(e.key==='Enter')addIdea()});
+
+const projects=[
+  {name:'xiaoyu-design-system 预览修复',status:'active',progress:82,tasks:['GitHub Pages 已启用','README 链接已改成在线预览','补齐教程型与 App 型 demo']},
+  {name:'个人 IP 视觉资产归档',status:'paused',progress:48,tasks:['头像统一','签名统一','卡片场景待补更多变体']},
+  {name:'内容谷仓工作流',status:'active',progress:64,tasks:['灵感收集','每周归档','AI 辅助成稿']}
+];
+function renderProjects(){
+  $('#projectList').innerHTML=projects.map(p=>`
+    <div class="project-card card">
+      <div class="project-top">
+        <strong>${escapeHtml(p.name)}</strong>
+        <span class="status ${p.status}">${p.status==='active'?'ACTIVE':'PAUSED'}</span>
+      </div>
+      <div class="progress"><div class="bar" style="width:${p.progress}%"></div></div>
+      <ul class="subtasks">${p.tasks.map(t=>`<li><span class="mini-dot"></span>${escapeHtml(t)}</li>`).join('')}</ul>
+    </div>`).join('');
+}
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+function setDate(){
+  const now=new Date();
+  $('#dayNum').textContent=String(now.getDate()).padStart(2,'0');
+  $('#dateText').textContent=now.toLocaleDateString('en-US',{month:'short',weekday:'short'}).toUpperCase();
+}
+setDate();renderTodos();renderCalendar();renderIdeas();renderProjects();
+</script>
+</body>
+</html>

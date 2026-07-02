@@ -16,7 +16,7 @@
 
 信息清晰、步骤明确、有节奏的单页科普/教程。
 
-🔗 [在线预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/assets/template-tutorial.html)
+🔗 [在线预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/demo-tutorial.html)
 
 ---
 
@@ -32,7 +32,7 @@
 
 功能优先、交互感、信息密度高的应用型页面。
 
-🔗 [在线预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/assets/template-app.html)
+🔗 [在线预览](https://xiaoyugucang-rgb.github.io/xiaoyu-design-system/demo-app.html)
 
 ---
 
@@ -75,6 +75,10 @@ assets/template-*.html(起点 - 从模板改,不从零写)
 personal-design-system/
 ├── SKILL.md                    ← 7步工作流(大脑)
 ├── brand-dna.md                ← 品牌基因:颜色/字体/气质/禁忌(需配置)
+├── demo-tutorial.html          ← 教程型在线预览
+├── demo-landing.html           ← 活动页在线预览
+├── demo-app.html               ← App型在线预览
+├── components-preview.html     ← 组件库在线预览
 ├── assets/                     ← 模板骨架(起点)
 │   ├── template-tutorial.html      教程页模板
 │   ├── template-landing.html       活动页模板

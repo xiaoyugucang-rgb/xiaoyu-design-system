@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在谷仓搭一个会长出内容的系统 - xiaoyugucang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,900;1,9..144,700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brown:#302C2B;
+  --brown-deep:#1F1B1A;
+  --orange:#F07C1C;
+  --orange-soft:#FBE6D2;
+  --red:#E84A5F;
+  --cream:#fefcf6;
+  --cream-dark:#faf6eb;
+  --ink:#1A1A2E;
+  --ink-light:#4A4A5A;
+  --ink-faint:#8A8A9A;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans SC',-apple-system,'PingFang SC','Helvetica Neue',sans-serif;
+  background:
+    radial-gradient(circle at 82% 10%,rgba(240,124,28,.16),transparent 28%),
+    radial-gradient(circle at 8% 35%,rgba(232,74,95,.08),transparent 24%),
+    var(--cream);
+  color:var(--ink);
+  line-height:1.8;
+  overflow-x:hidden;
+}
+::selection{background:var(--orange);color:var(--brown-deep)}
+.container{max-width:1280px;margin:0 auto;padding:0 clamp(22px,4vw,60px)}
+.hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(280px,.72fr);
+  align-items:center;
+  gap:clamp(34px,6vw,84px);
+  padding:clamp(52px,8vh,84px) clamp(22px,4vw,60px);
+  max-width:1320px;
+  margin:0 auto;
+}
+.hero-kicker{
+  font-family:'Caveat',cursive;
+  font-size:clamp(1.2rem,2vw,1.6rem);
+  color:var(--orange);
+  margin-bottom:16px;
+}
+.hero h1{
+  font-family:'Noto Serif SC',serif;
+  font-weight:900;
+  font-size:clamp(3rem,7vw,5.8rem);
+  line-height:1.12;
+  letter-spacing:0;
+}
+.mark{
+  background:linear-gradient(to top,rgba(240,124,28,.36) 42%,transparent 42%);
+  padding:0 .08em;
+}
+.hero-copy{
+  max-width:620px;
+  margin-top:28px;
+  color:var(--ink-light);
+  font-size:clamp(1rem,1.6vw,1.18rem);
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.hero-tags span{
+  padding:8px 16px;
+  border-radius:8px;
+  font-size:.88rem;
+  font-weight:700;
+  border:1px solid rgba(48,44,43,.12);
+}
+.hero-tags span:nth-child(1){background:rgba(48,44,43,.08);color:var(--brown)}
+.hero-tags span:nth-child(2){background:rgba(240,124,28,.16);color:#8f4507}
+.hero-tags span:nth-child(3){background:rgba(232,74,95,.09);color:var(--red)}
+.portrait-wrap{position:relative;display:grid;place-items:center;min-height:520px}
+.portrait-ring{
+  position:absolute;
+  width:clamp(280px,32vw,420px);
+  aspect-ratio:1;
+  border:3px dashed rgba(240,124,28,.7);
+  border-radius:50%;
+}
+.portrait-card{
+  position:relative;
+  width:clamp(240px,28vw,360px);
+  aspect-ratio:1;
+  border-radius:50%;
+  overflow:hidden;
+  border:8px solid var(--orange);
+  background:var(--orange-soft);
+  box-shadow:0 24px 80px rgba(48,44,43,.14);
+}
+.portrait-card img{width:100%;height:100%;object-fit:cover}
+.float-pill{
+  position:absolute;
+  background:var(--cream);
+  border:1px solid rgba(48,44,43,.08);
+  box-shadow:0 10px 30px rgba(48,44,43,.12);
+  padding:9px 16px;
+  border-radius:999px;
+  font-size:.86rem;
+  font-weight:700;
+}
+.pill-a{top:13%;right:2%}.pill-b{left:0;bottom:22%}.pill-c{right:6%;bottom:9%;color:var(--red)}
+.nameplate{
+  margin-top:28px;
+  text-align:center;
+  font-family:'Noto Serif SC',serif;
+  font-size:clamp(1.6rem,3vw,2.35rem);
+  font-weight:900;
+  max-width:100%;
+  overflow-wrap:anywhere;
+}
+.scroll-note{
+  font-family:'Caveat',cursive;
+  color:var(--orange);
+  text-align:center;
+  margin-top:8px;
+  font-size:1.05rem;
+}
+.core{
+  margin:-34px auto 0;
+  max-width:1180px;
+  padding:0 clamp(22px,4vw,60px) clamp(70px,9vh,110px);
+}
+.core-card{
+  position:relative;
+  background:white;
+  border-radius:22px;
+  padding:34px 42px 34px 82px;
+  box-shadow:0 10px 42px rgba(48,44,43,.07);
+}
+.core-card::before{
+  content:"“";
+  position:absolute;
+  left:24px;
+  top:8px;
+  font-family:'Fraunces',serif;
+  font-size:5.4rem;
+  color:var(--orange);
+  line-height:1;
+}
+.core-card h2{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:1.45rem;
+  margin-bottom:8px;
+}
+.section{padding:clamp(84px,12vh,150px) 0}
+.section.alt{background:var(--cream-dark)}
+.section.dark{background:var(--brown-deep);color:#f6efe4}
+.section-head{
+  margin-bottom:clamp(36px,6vw,72px);
+  position:relative;
+}
+.sec-no{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:clamp(1.6rem,3vw,2.3rem);
+  color:var(--orange);
+  opacity:.55;
+}
+.section h2{
+  font-family:'Noto Serif SC',serif;
+  font-weight:900;
+  font-size:clamp(1.8rem,4vw,3rem);
+  line-height:1.25;
+}
+.lead{max-width:680px;color:var(--ink-light);margin-top:14px;font-size:1.02rem}
+.dark .lead{color:rgba(255,255,255,.68)}
+.opening-grid{
+  display:grid;
+  grid-template-columns:.42fr 1fr;
+  gap:clamp(40px,6vw,80px);
+  align-items:start;
+}
+.sticky-note{position:sticky;top:90px}
+.big-english{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:900;
+  font-size:clamp(2.4rem,5vw,4rem);
+  color:var(--brown);
+  opacity:.14;
+  line-height:1.05;
+}
+.hand-note{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--orange);margin-top:14px}
+.essay-card{
+  background:white;
+  border-radius:18px;
+  padding:clamp(28px,4vw,44px);
+  box-shadow:0 6px 28px rgba(48,44,43,.06);
+}
+.essay-card p{color:var(--ink-light);margin-bottom:16px}
+.diamond-list{list-style:none;margin-top:22px}
+.diamond-list li{position:relative;padding-left:28px;margin-bottom:13px;color:var(--ink-light)}
+.diamond-list li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.72em;
+  width:12px;
+  height:12px;
+  background:var(--orange);
+  transform:rotate(45deg);
+  border-radius:2px;
+}
+.question-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.q-card{
+  background:white;
+  border-radius:18px;
+  padding:26px;
+  min-height:180px;
+  box-shadow:0 4px 22px rgba(48,44,43,.05);
+  position:relative;
+  overflow:hidden;
+}
+.q-card::after{
+  content:attr(data-no);
+  position:absolute;
+  right:16px;
+  bottom:-18px;
+  font-family:'Fraunces',serif;
+  font-size:5rem;
+  color:var(--brown);
+  opacity:.07;
+}
+.q-card h3{font-size:1.08rem;margin-bottom:12px}
+.q-card p{font-size:.92rem;color:var(--ink-light)}
+.topic-layout{
+  display:grid;
+  grid-template-columns:1fr 1.1fr;
+  gap:clamp(34px,6vw,72px);
+}
+.source-list{display:grid;gap:20px}
+.source-block{
+  background:white;
+  padding:24px 28px;
+  border-radius:16px;
+  border-top:4px solid var(--orange);
+  box-shadow:0 4px 22px rgba(48,44,43,.05);
+}
+.source-block:nth-child(2){border-top-color:var(--red)}
+.source-block:nth-child(3){border-top-color:var(--brown)}
+.source-block h3{font-family:'Noto Serif SC',serif;font-size:1.06rem;margin-bottom:8px}
+.source-block p{color:var(--ink-light);font-size:.92rem}
+.criteria-panel{
+  position:sticky;
+  top:82px;
+  background:var(--brown);
+  color:#fff7ed;
+  border-radius:24px;
+  padding:clamp(28px,4vw,44px);
+}
+.criteria-item{
+  display:grid;
+  grid-template-columns:48px 1fr;
+  gap:16px;
+  padding:16px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.criteria-item:last-child{border-bottom:0}
+.criteria-item b{font-family:'Fraunces',serif;font-style:italic;font-size:1.8rem;color:var(--orange)}
+.criteria-item p{color:rgba(255,255,255,.72)}
+.timeline{position:relative}
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:rgba(240,124,28,.35);
+}
+.tl-item{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:58px;
+  margin-bottom:52px;
+  position:relative;
+}
+.tl-item::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:26px;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--orange);
+  border:4px solid var(--cream);
+  transform:translateX(-50%);
+  z-index:2;
+}
+.tl-content{
+  background:white;
+  color:var(--ink);
+  border-radius:16px;
+  padding:28px 32px;
+  box-shadow:0 4px 22px rgba(48,44,43,.06);
+}
+.tl-item:nth-child(even) .tl-content{grid-column:2}
+.tl-item:nth-child(even) .tl-spacer{grid-column:1;grid-row:1}
+.tl-content h3{font-family:'Noto Serif SC',serif;margin-bottom:10px}
+.tl-content p,.tl-content li{color:var(--ink-light);font-size:.94rem}
+.tl-content ul{list-style:none;margin-top:10px}
+.tl-content li{position:relative;padding-left:20px;margin-bottom:6px}
+.tl-content li::before{content:"";position:absolute;left:0;top:.72em;width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.system-flow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  margin-bottom:36px;
+}
+.system-flow span{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff7ed;
+  border-radius:10px;
+  padding:10px 16px;
+  font-weight:700;
+}
+.system-flow .arrow{background:transparent;border:0;color:var(--orange);padding:0;font-size:1.2rem}
+.system-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.sys-card{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:26px;
+}
+.sys-card h3{font-family:'Noto Serif SC',serif;margin-bottom:10px}
+.sys-card p{color:rgba(255,255,255,.68);font-size:.92rem}
+.end{
+  text-align:center;
+  padding:clamp(90px,13vh,160px) clamp(22px,4vw,60px);
+}
+.end .quote{
+  max-width:900px;
+  margin:0 auto 42px;
+  font-family:'Noto Serif SC',serif;
+  font-size:clamp(2rem,4.6vw,3.8rem);
+  line-height:1.45;
+  font-weight:900;
+}
+.end img{
+  width:104px;
+  height:104px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--orange);
+  margin-bottom:16px;
+}
+.end .author{font-weight:900;font-size:1.15rem}
+.end .tagline{color:var(--ink-light);margin-top:4px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+@media (max-width:900px){
+  .hero,.opening-grid,.topic-layout{grid-template-columns:1fr}
+  .portrait-wrap{min-height:420px}
+  .question-grid,.system-grid{grid-template-columns:1fr}
+  .sticky-note,.criteria-panel{position:static}
+  .timeline::before{left:10px}
+  .tl-item,.tl-item:nth-child(even){grid-template-columns:1fr;gap:0;padding-left:34px}
+  .tl-item::before{left:10px}
+  .tl-item:nth-child(even) .tl-content{grid-column:auto}
+  .tl-spacer{display:none}
+}
+@media (max-width:600px){
+  body{font-size:15px}
+  .core-card{padding:30px 24px 28px 58px}
+  .hero-tags span{width:100%}
+}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-text reveal">
+    <div class="hero-kicker">A talk by xiaoyugucang</div>
+    <h1>在谷仓里，<br>搭一个会长出<span class="mark">内容</span>的系统</h1>
+    <p class="hero-copy">这是一页教程型预览：使用分栏 hero、金句卡、sticky 侧栏、时间线与深色系统面板，完整呈现 xiaoyugucang 的个人 IP 设定。</p>
+    <div class="hero-tags">
+      <span>小红书 AI 创作者</span>
+      <span>内容系统搭建</span>
+      <span>在谷仓不停蛄蛹的小鱼</span>
+    </div>
+  </div>
+  <div class="portrait-wrap reveal reveal-d1">
+    <div class="portrait-ring"></div>
+    <div class="portrait-card"><img src="assets/avatar.jpg" alt="xiaoyugucang 头像"></div>
+    <span class="float-pill pill-a">个人 IP</span>
+    <span class="float-pill pill-b">AI 工作流</span>
+    <span class="float-pill pill-c">内容谷仓</span>
+    <div class="nameplate">xiaoyugucang</div>
+    <div class="scroll-note">点击头像不用关注我，先把系统搭起来 ✦</div>
+  </div>
+</section>
+
+<div class="core">
+  <div class="core-card reveal">
+    <h2>Core Message</h2>
+    <p>个人品牌不是“想一个人设”，而是把你真实会做的事、反复出现的兴趣、能被别人记住的表达方式，整理成一个可以持续生产的系统。</p>
+  </div>
+</div>
+
+<section class="section alt">
+  <div class="container opening-grid">
+    <aside class="sticky-note reveal">
+      <div class="big-english">Start<br>from<br>Yourself</div>
+      <div class="hand-note">先找到自己，再开始输出。</div>
+    </aside>
+    <div class="essay-card reveal reveal-d1">
+      <p>很多人做内容时最先问“什么赛道最赚钱”。但真正能持续的内容，通常来自你已经在生活里反复琢磨的东西。</p>
+      <p>对 xiaoyugucang 来说，谷仓不是一个场景词，而是一个工作方式：把灵感、方法、复盘、素材先囤起来，再慢慢加工成可以被看见的内容。</p>
+      <ul class="diamond-list">
+        <li>不是追热点，而是找到你能长期解释的问题。</li>
+        <li>不是装成专家，而是持续展示你怎么观察和解决。</li>
+        <li>不是把 AI 当代写，而是让 AI 帮你整理谷仓。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="sec-no">01</span>
+      <h2>找到自己的 6 个问题</h2>
+      <p class="lead">这一段复刻原作者“六问网格”的呈现方式，用来展示教程页的信息组织能力。</p>
+    </div>
+    <div class="question-grid">
+      <div class="q-card reveal" data-no="01"><h3>你总在研究什么？</h3><p>那些你反复截图、收藏、写进备忘录里的主题，就是内容原料。</p></div>
+      <div class="q-card reveal reveal-d1" data-no="02"><h3>别人常问你什么？</h3><p>被反复咨询的问题，通常就是别人愿意听你讲的部分。</p></div>
+      <div class="q-card reveal reveal-d2" data-no="03"><h3>你有什么真实体感？</h3><p>没经历过的东西很容易写空，真实体感会自动长出细节。</p></div>
+      <div class="q-card reveal" data-no="04"><h3>你想帮谁省力？</h3><p>明确对象之后，内容会更像解决问题，而不是自言自语。</p></div>
+      <div class="q-card reveal reveal-d1" data-no="05"><h3>你的符号是什么？</h3><p>头像、色彩、语言习惯、反复出现的小物件，都会变成识别点。</p></div>
+      <div class="q-card reveal reveal-d2" data-no="06"><h3>你如何持续记录？</h3><p>没有素材库，就只能临时硬想；有谷仓，内容会自然发芽。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="sec-no">02</span>
+      <h2>选题不是凭空想，是从谷仓里筛</h2>
+      <p class="lead">左侧是来源，右侧是筛选标准，保持原版教程页“来源 + 判断”的双栏逻辑。</p>
+    </div>
+    <div class="topic-layout">
+      <div class="source-list">
+        <div class="source-block reveal"><h3>从生活现场来</h3><p>工作卡点、学习笔记、和朋友的一次聊天、突然想明白的一个方法。</p></div>
+        <div class="source-block reveal reveal-d1"><h3>从用户问题来</h3><p>评论区、私信、搜索词、别人听不懂但你能讲清楚的概念。</p></div>
+        <div class="source-block reveal reveal-d2"><h3>从复盘数据来</h3><p>哪些内容被收藏？哪些内容你写得最顺？共性就是下一轮方向。</p></div>
+      </div>
+      <div class="criteria-panel reveal reveal-d1">
+        <div class="criteria-item"><b>1</b><p><strong>池子够大吗？</strong><br>它是不是一个足够多人关心的问题。</p></div>
+        <div class="criteria-item"><b>2</b><p><strong>切口够小吗？</strong><br>大主题要落到具体场景，才会有人觉得“这说的是我”。</p></div>
+        <div class="criteria-item"><b>3</b><p><strong>你讲得出细节吗？</strong><br>细节来自真实经历，不来自万能模板。</p></div>
+        <div class="criteria-item"><b>4</b><p><strong>它能进系统吗？</strong><br>一次表达最好能沉淀为素材、组件、方法或清单。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="sec-no">03</span>
+      <h2>一边生活，一边把内容放进谷仓</h2>
+      <p class="lead">复刻原版交错时间线：把“做内容”从额外 KPI 变成日常系统。</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-content"><h3>灵感先入库</h3><p>看到一个问题、读到一句话、踩到一个坑，先扔进素材库，不急着写成完整内容。</p><ul><li>30 秒记录</li><li>保留原始语境</li><li>标记可能用途</li></ul></div><div class="tl-spacer"></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-content"><h3>每周做一次归档</h3><p>把散落灵感按主题整理，挑出最有体感、最能帮到人的部分。</p><ul><li>同类合并</li><li>拆成系列</li><li>补充案例</li></ul></div><div class="tl-spacer"></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-content"><h3>用 AI 打磨结构</h3><p>AI 不替你判断，但可以帮你把素材变成标题、提纲、卡片和长文骨架。</p><ul><li>先给观点</li><li>再让 AI 排版</li><li>最后人工校准语气</li></ul></div><div class="tl-spacer"></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-content"><h3>发布后继续回流</h3><p>评论、收藏、转发和新的问题，再回到谷仓，成为下一批内容原料。</p><ul><li>记录反馈</li><li>更新选题库</li><li>形成复利</li></ul></div><div class="tl-spacer"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="sec-no">04</span>
+      <h2>xiaoyugucang 的内容系统</h2>
+      <p class="lead">这一段用深色面板打破节奏，保留原作者“系统流程”表达方式。</p>
+    </div>
+    <div class="system-flow reveal">
+      <span>灵感捕捉</span><span class="arrow">→</span><span>素材归档</span><span class="arrow">→</span><span>AI 整理</span><span class="arrow">→</span><span>手工校准</span><span class="arrow">→</span><span>多平台发布</span>
+    </div>
+    <div class="system-grid">
+      <div class="sys-card reveal"><h3>谷仓</h3><p>收纳所有未完成、未命名、还在蛄蛹的想法。</p></div>
+      <div class="sys-card reveal reveal-d1"><h3>小鱼</h3><p>保持松弛、具体、带一点笨拙的观察口吻。</p></div>
+      <div class="sys-card reveal reveal-d2"><h3>AI</h3><p>负责整理、扩写、变体生成；最终审美判断仍由人完成。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="end">
+  <p class="quote reveal">先别急着成为谁。<br>把你已经在做的事，整理成一个别人能看见的系统。</p>
+  <img class="reveal reveal-d1" src="assets/avatar.jpg" alt="xiaoyugucang 头像">
+  <div class="author reveal reveal-d2">xiaoyugucang</div>
+  <div class="tagline reveal reveal-d3">在谷仓不停蛄蛹的小鱼</div>
+</section>
+
+<script>
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
